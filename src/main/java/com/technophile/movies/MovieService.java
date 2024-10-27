@@ -17,7 +17,11 @@ public class MovieService {
         return movieRepository.findAll();
     }
     public Optional<Movies> getMovie(ObjectId id){
-        System.out.println("SERVICE CLASS CALLED");
+        System.out.println("SERVICE CLASS CALLED Movies By ID");
         return movieRepository.findById(id);
+    }
+    public Optional<Movies> getMovieByIMDBId(String id){
+        System.out.println("SERVICE CLASS CALLED to get movies by IMDBId");
+        return movieRepository.findMoviesByimdbId(id);
     }
 }
