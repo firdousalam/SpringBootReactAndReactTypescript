@@ -386,3 +386,68 @@ export default function CourseGoalList({goals} : CourseGoalListProps ){
     </ul>
 }
 ```
+
+# Pass Function Through Props
+
+## we will try to pass function from 
+app.tsx ->CourseGoalList -> Course Goal
+we will declare Function in app.tsx 
+and fire it from courseGoal.tsx components
+
+step 1 create Function and app.tsx and pass it as props to child components
+```
+// delete Goals 
+  // we have to pass this function to courseGoal components
+  function handleDeleteGoal(id:number){
+    setGoals(prevGoals => prevGoals.filter((goal)=> goal.id != id));
+  }
+  //passing it to courseGoalListComponents
+    <CourseGoalList goals={goals} onDeleteGoal={handleDeleteGoal}></CourseGoalList>
+    // now we have pass the function from app.tsx to CourseGoalList Components
+```
+step2 : Now we will read the function in CourseGoalList as props and update type to receive props as function
+```
+// the way we can declare array of object types
+type CourseGoalListProps = {
+    goals : CGoalType[],
+    onDeleteGoal:(id:number)=>void; // the way we can declare function type
+};
+export default function CourseGoalList({goals,onDeleteGoal} : CourseGoalListProps ){
+   return <ul>
+        { goals.map((goal)=> (
+            <li key={goal.id}>
+            <CourseGoal
+                title={goal.title}  onDelete={onDeleteGoal} id={goal.id}>
+                <span>{goal.description}</span>
+            </CourseGoal>
+            </li>
+        ))
+        }
+    </ul>
+}
+```
+step 3 : function been passed along with all required data to CourseGoalList components now we
+need to passit to CourseGoal Components where the button is present
+we will fire this function from there
+
+```
+//using react default children using type
+type CourseGoalProp = PropsWithChildren<
+                            {title:string;
+                            onDelete:(id:number)=>void;
+                            id:number
+                        }>
+export default function CourseGoal({title,onDelete,id,children} : CourseGoalProp){
+    return (
+    <>
+        <div>
+            <h2>
+               {id}- {title}
+            </h2>
+            <p>{children}</p>
+        </div>
+        <button onClick={() => onDelete(id)}> DELETE</button>
+    </>);
+      
+}
+```

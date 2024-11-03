@@ -1,20 +1,18 @@
 import CourseGoal from "./CourseGoal";
+import { type CourseGoal as CGoalType} from '../App'
 
-// they way we can declare array of object types
+// the way we can declare array of object types
 type CourseGoalListProps = {
-    goals : {
-    title:string;
-    description : string;
-    id:number;
-  }[]
+    goals : CGoalType[],
+    onDeleteGoal:(id:number)=>void; // the way we can declare function type
 };
 
-export default function CourseGoalList({goals} : CourseGoalListProps ){
+export default function CourseGoalList({goals,onDeleteGoal} : CourseGoalListProps ){
    return <ul>
         { goals.map((goal)=> (
             <li key={goal.id}>
             <CourseGoal
-                title={goal.title} >
+                title={goal.title}  onDelete={onDeleteGoal} id={goal.id}>
                 <span>{goal.description}</span>
             </CourseGoal>
             </li>

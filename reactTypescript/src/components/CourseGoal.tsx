@@ -104,15 +104,21 @@ import { type PropsWithChildren} from "react";
 
 
 //using react default children using type
-type CourseGoalProp = PropsWithChildren<{title:string}>
-export default function CourseGoal({title,children} : CourseGoalProp){
-    return <article>
+type CourseGoalProp = PropsWithChildren<
+                            {title:string;
+                            onDelete:(id:number)=>void;
+                            id:number
+                        }>
+export default function CourseGoal({title,onDelete,id,children} : CourseGoalProp){
+    return (
+    <>
         <div>
             <h2>
-                {title}
+               {id}- {title}
             </h2>
             <p>{children}</p>
         </div>
-        <button>DELETE</button>
-    </article>
+        <button onClick={() => onDelete(id)}> DELETE</button>
+    </>);
+      
 }
