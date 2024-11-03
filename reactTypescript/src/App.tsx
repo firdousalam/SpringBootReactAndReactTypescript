@@ -23,6 +23,7 @@ return (
     <Headers image={{src:reactImg,alt:'A List Of Goal'} }>
        <h1>Your Course Goals</h1>
     </Headers>
+    <button> Add Course Goals</button>
     <CourseGoal
      title="learn React +TS"
     >
