@@ -14,7 +14,7 @@
 //     </article>
 // }
 
-import { type PropsWithChildren, type ReactNode } from "react";
+import { FC, type PropsWithChildren, type ReactNode } from "react";
 
 //using destructuring
 // export default function CourseGoal({title,description} : {
@@ -73,15 +73,30 @@ import { type PropsWithChildren, type ReactNode } from "react";
 // }
 
 // using react default children using type
+// type CourseGoalProp = PropsWithChildren<{title:string}>
+// export default function CourseGoal({title,children} : CourseGoalProp){
+//     return <article>
+//         <div>
+//             <h2>
+//                 {title}
+//             </h2>
+//             <p>{children}</p>
+//         </div>
+//         <button>DELETE</button>
+//     </article>
+// }
+
+//another way of declaring react component function using arrow function
 type CourseGoalProp = PropsWithChildren<{title:string}>
-export default function CourseGoal({title,children} : CourseGoalProp){
+const CourseGoal : FC<CourseGoalProp> = ({title,children} )=>{
     return <article>
         <div>
             <h2>
-                {title}
+              USING Arrow Function   {title}
             </h2>
             <p>{children}</p>
         </div>
         <button>DELETE</button>
     </article>
 }
+export default CourseGoal
