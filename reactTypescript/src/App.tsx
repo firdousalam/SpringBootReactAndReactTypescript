@@ -1,6 +1,8 @@
 
 import './App.css'
 import CourseGoal from './components/CourseGoal';
+import Headers from './components/Header';
+import reactImg from './assets/react.svg';
 function App() {
  
 
@@ -18,6 +20,9 @@ function App() {
 // if we want to use children to send data to components
 return (
   <main>
+    <Headers image={{src:reactImg,alt:'A List Of Goal'} }>
+       <h1>Your Course Goals</h1>
+    </Headers>
     <CourseGoal
      title="learn React +TS"
     >
