@@ -451,3 +451,151 @@ export default function CourseGoal({title,onDelete,id,children} : CourseGoalProp
       
 }
 ```
+
+# add form in react typescript
+
+```
+
+export default function NewGoal(){
+    function handlerSubmit(event: FormEvent<HTMLFormElement>){// react type for submit form FormEvent
+        event.preventDefault();
+        new FormData(event.currentTarget); // similar to javascript event.target
+    }
+    return ( <form onSubmit={handlerSubmit}>
+        <p>
+            <label htmlFor="goal">Your Goal</label>
+            <input id="goal" type="text"></input>
+        </p>
+        <p>
+            <label htmlFor="summary">Short Summary</label>
+            <input id="summary" type="text"></input>
+        </p>
+        <p>
+            <button>Add Goal</button>
+        </p>
+    </form>
+    )
+}
+```
+## using useRef to get data
+
+```
+import {useRef, type FormEvent } from "react";
+
+export default function NewGoal(){
+    const goal = useRef<HTMLInputElement>(null); // dafault its undefined to resolve it use null
+    const summary = useRef<HTMLInputElement>(null);
+
+    function handlerSubmit(event: FormEvent<HTMLFormElement>){// react type for submit form FormEvent
+        event.preventDefault();
+        new FormData(event.currentTarget); // similar to javascript event.target
+        //to read goal of text
+        const enteredGoal = goal.current!.value;
+    }
+    return ( <form onSubmit={handlerSubmit}>
+        <p>
+            <label htmlFor="goal">Your Goal</label>
+            <input id="goal" type="text" ref={goal}></input>
+        </p>
+        <p>
+            <label htmlFor="summary">Short Summary</label>
+            <input id="summary" type="text" ref={summary}></input>
+        </p>
+        <p>
+            <button>Add Goal</button>
+        </p>
+    </form>
+    )
+}
+```
+updated code to add goal using useRef
+
+```
+import './App.css'
+//import CourseGoal from './components/CourseGoal';
+import Headers from './components/Header';
+import reactImg from './assets/react.svg';
+import { useState } from 'react';
+import CourseGoalList from './components/CourseGoalList';
+import NewGoal from './components/NewGoal';
+
+// make this type as global
+export type CourseGoal = {
+  title:string;
+  description : string;
+  id:number
+}
+
+function App() {
+  const [goals,setGoals] = useState<CourseGoal[]>([]); // alternatively we can use useState<Array<CourseGoal>>([]);
+// to add new goals
+  function handleAddGoal(title:string,description:string){
+
+    setGoals(prevGoals =>{ // prevGoals contain all previous data of goals array
+      const newGoal : CourseGoal = {
+          id:Math.random(),
+          title :title,
+          description : description
+      }
+      return [...prevGoals,newGoal]; // adding newGoal into prevGoals array and return new array
+    });
+  }
+
+  // delete Goals 
+  // we have to pass this function to courseGoal components
+  function handleDeleteGoal(id:number){
+    setGoals(prevGoals => prevGoals.filter((goal)=> goal.id != id));
+  }
+
+  return (
+    <main>
+      <Headers image={{src:reactImg,alt:'A List Of Goal'} }>
+        <h1>Your Course Goals</h1>
+      </Headers>
+      <NewGoal onAddGoal={handleAddGoal}/>
+      <CourseGoalList goals={goals} onDeleteGoal={handleDeleteGoal}></CourseGoalList>
+    
+    </main>
+  )
+}
+
+export default App
+```
+NewGoal Components code
+```
+import {useRef, type FormEvent } from "react";
+type addGoalProps = {
+    onAddGoal:(title:string,description:string)=>void; // the way we can declare function type
+};
+export default function NewGoal({onAddGoal}:addGoalProps){
+   
+    const goal = useRef<HTMLInputElement>(null); // dafault its undefined to resolve it use null
+    const summary = useRef<HTMLInputElement>(null);
+
+    function handlerSubmit(event: FormEvent<HTMLFormElement>){// react type for submit form FormEvent
+        event.preventDefault();
+        new FormData(event.currentTarget); // similar to javascript event.target
+        //to read goal of text
+        const enteredGoal = goal.current!.value;
+        const enteredSummary = summary.current!.value;
+        // to reset form
+        event.currentTarget.reset(); // it will reset all form element data
+        onAddGoal(enteredGoal,enteredSummary);
+    }
+    return ( <form onSubmit={handlerSubmit}>
+        <p>
+            <label htmlFor="goal">Your Goal </label>
+            <input id="goal" type="text" ref={goal}></input>
+        </p>
+        <p>
+            <label htmlFor="summary">Short Summary </label>
+            <input id="summary" type="text" ref={summary}></input>
+        </p>
+        <p>
+            <button>Add Goal</button>
+        </p>
+    </form>
+    )
+}
+
+```
