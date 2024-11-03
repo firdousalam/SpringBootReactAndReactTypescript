@@ -244,3 +244,57 @@ export default function Headers({image,children} : HeaderProp){
 ```
 
 # Next Topic UseState state in react
+
+## how to Read array and populate it by button click using UseState
+
+step 1 : declare your data object type which will be there inside that array
+// it can be simple one like string, number but for this part i had consider this as object of array
+```
+type CourseGoal = {
+  title:string;
+  description : string;
+  id:number
+}
+```
+step 2 : declare your useState
+```
+import { useState } from 'react';
+ const [goals,setGoals] = useState<CourseGoal[]>([]); 
+ // alternatively we can use useState<Array<CourseGoal>>([]);
+ // if it was a string or number
+ //  const [goals,setGoals] = useState("");  this would work
+
+```
+step 3 : Create a function which will consume the event and add the data into the goals array
+
+```
+  function handleAddGoal(){
+
+    setGoals(prevGoals =>{ // prevGoals contain all previous data of goals array
+      const newGoal : CourseGoal = {
+          id:Math.random(),
+          title : "Learn React TS",
+          description : "Learn it in depth"
+      }
+      return [...prevGoals,newGoal]; // adding newGoal into prevGoals array and return new array
+    });
+  }
+```
+
+step 4 : in HTML fire the event to add data and displait using map function
+
+```
+  <button onClick={handleAddGoal}> Add Course Goals</button>
+      <ul>
+          { goals.map((goal)=> (
+            <li key={goal.id}>
+              <CourseGoal
+                title={goal.title} >
+                  <p>{goal.description}</p>
+                </CourseGoal>
+            </li>
+          ))
+          }
+      </ul>
+
+```
