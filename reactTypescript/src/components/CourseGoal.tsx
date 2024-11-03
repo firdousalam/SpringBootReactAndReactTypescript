@@ -14,7 +14,7 @@
 //     </article>
 // }
 
-import { type ReactNode } from "react";
+import { type PropsWithChildren, type ReactNode } from "react";
 
 //using destructuring
 // export default function CourseGoal({title,description} : {
@@ -55,11 +55,25 @@ import { type ReactNode } from "react";
 // }
 
 
-// using react default children
-interface CourseGoalProp{
-    title : string;
-    children : ReactNode
-}
+// // using react default children using interface
+// interface CourseGoalProp{
+//     title : string;
+//     children : ReactNode
+// }
+// export default function CourseGoal({title,children} : CourseGoalProp){
+//     return <article>
+//         <div>
+//             <h2>
+//                 {title}
+//             </h2>
+//             <p>{children}</p>
+//         </div>
+//         <button>DELETE</button>
+//     </article>
+// }
+
+// using react default children using type
+type CourseGoalProp = PropsWithChildren<{title:string}>
 export default function CourseGoal({title,children} : CourseGoalProp){
     return <article>
         <div>
