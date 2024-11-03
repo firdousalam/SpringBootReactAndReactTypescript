@@ -298,3 +298,91 @@ step 4 : in HTML fire the event to add data and displait using map function
       </ul>
 
 ```
+
+# How to Pass Array Of Object from One Component Into Another Using Props and useState
+
+step1 : declare your property on parent page
+```
+import './App.css'
+//import CourseGoal from './components/CourseGoal';
+import Headers from './components/Header';
+import reactImg from './assets/react.svg';
+import { useState } from 'react';
+import CourseGoalList from './components/CourseGoalList';
+
+type CourseGoal = {
+  title:string;
+  description : string;
+  id:number
+}
+function App() {
+  const [goals,setGoals] = useState<CourseGoal[]>([]); // alternatively we can use useState<Array<CourseGoal>>([]);
+
+  function handleAddGoal(){
+
+    setGoals(prevGoals =>{ // prevGoals contain all previous data of goals array
+      const newGoal : CourseGoal = {
+          id:Math.random(),
+          title : "Learn React TS",
+          description : "Learn it in depth"
+      }
+      return [...prevGoals,newGoal]; // adding newGoal into prevGoals array and return new array
+    });
+  }
+  return (
+    <main>
+      <Headers image={{src:reactImg,alt:'A List Of Goal'} }>
+        <h1>Your Course Goals</h1>
+      </Headers>
+      <button onClick={handleAddGoal}> Add Course Goals</button>
+      <CourseGoalList goals={goals}></CourseGoalList>
+    
+    </main>
+  )
+}
+
+export default App
+```
+we are passing goals from parent to CourseGoalList Components and goal props is an array ob object
+of type CourseGoal
+
+Now we need to Declare a type of array of CourseGoal type object 
+we can do it by following way
+```
+// they way we can declare array of object types
+type CourseGoalListProps = {
+    goals : {
+    title:string;
+    description : string;
+    id:number;
+  }[]
+};
+```
+now we can utalize it and create a property type to comsume it as props
+
+```
+import CourseGoal from "./CourseGoal";
+
+// they way we can declare array of object types
+type CourseGoalListProps = {
+    goals : {
+    title:string;
+    description : string;
+    id:number;
+  }[]
+};
+
+export default function CourseGoalList({goals} : CourseGoalListProps ){
+   return <ul>
+        { goals.map((goal)=> (
+            <li key={goal.id}>
+            <CourseGoal
+                title={goal.title} >
+                <span>{goal.description}</span>
+            </CourseGoal>
+            </li>
+        ))
+        }
+    </ul>
+}
+```
